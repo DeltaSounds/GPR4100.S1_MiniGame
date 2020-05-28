@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -14,7 +12,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private EndGame _uiGameOver;
 	[SerializeField] private Animator _animator;
 
-	public bool[] UnlockItem = new bool[2];
+	public Items[] UnlockItem = new Items[2];
 
 	public int LevelIndex;
 
@@ -29,9 +27,9 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-		_animator.SetBool("hasGun", UnlockItem[1]);
+		_animator.SetBool("hasGun", UnlockItem[1].EnableItem);
 
-		if (UnlockItem[1])
+		if (UnlockItem[1].EnableItem)
 			Arms.SetActive(true);
 	}
 
@@ -39,7 +37,6 @@ public class GameManager : MonoBehaviour
 	{
 		if(PlayerH.CurrentHealth <= 0)
 		{
-
 			_uiGameOver.OnEndGame();
 
 			CharacterRendr.enabled = false;

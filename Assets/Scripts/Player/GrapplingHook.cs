@@ -8,18 +8,20 @@ public struct ThisStruct
 
 public class GrapplingHook : MonoBehaviour
 {
-	public GameObject Player;
-	public LayerMask PlayerMask;
-	public LineRenderer LineRef;
-	public GameManager PlayerManager;
+	[Header("References")]
+	[SerializeField] private GameObject Player;
+	[SerializeField] private LayerMask PlayerMask;
+	[SerializeField] private LineRenderer LineRef;
+	[SerializeField] private GameManager PlayerManager;
 
-	[SerializeField] private float _jumpVelocity = 4;
+	[Header("Hook Properties")]
 	[SerializeField] private float _speed = 10;
 	[SerializeField] private float _raycastDistance = 20;
+	[SerializeField] private float _jumpVelocity = 4;
 
-	[HideInInspector] public PlayerHealth PHealth;
-	[HideInInspector] public Rigidbody2D PlayerRigid;
-	[HideInInspector] public DistanceJoint2D PlayerJoint;
+	private PlayerHealth PHealth;
+	private Rigidbody2D PlayerRigid;
+	private DistanceJoint2D PlayerJoint;
 
 	public AudioSource GrappleSound;
 
@@ -50,7 +52,7 @@ public class GrapplingHook : MonoBehaviour
 
 	void Update()
 	{
-		if(PHealth.CurrentHealth > 0 && PlayerManager.UnlockItem[0] && Player != null && PHealth != null && PlayerRigid != null && PlayerJoint != null)
+		if(PHealth.CurrentHealth > 0 && PlayerManager.UnlockItem[0].EnableItem && Player != null && PHealth != null && PlayerRigid != null && PlayerJoint != null)
 		{
 			target = _playerCamera.ScreenToWorldPoint(new Vector3(Screen.width - Input.mousePosition.x, Screen.height - Input.mousePosition.y, transform.position.z));
 

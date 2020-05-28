@@ -102,7 +102,7 @@ public class CharacterController2D : MonoBehaviour
 
 	private void Flip()
 	{
-		if(PlayerManager.UnlockItem[1] == false)
+		if(PlayerManager.UnlockItem[1].EnableItem == false)
 		{
 			// Switch the way the player is labeled as facing.
 			m_FacingRight = !m_FacingRight;

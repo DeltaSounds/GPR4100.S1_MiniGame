@@ -4,58 +4,58 @@ using UnityEngine;
 
 public class ShakeCamera2D : MonoBehaviour
 {
-	public Camera MainCam;
-	float shakeAmount = 0f;
-	public bool DebugMode = false;
+	[SerializeField] private float _shakeAmount = 0.01f;
+	[SerializeField] private float _shakeLength = 0.05f;
+	[SerializeField] private float _shakeDelay = 0.5f;
+	[SerializeField] private bool _debugMode;
 
-	public float ShakeAmt = 0.01f;
-	public float ShakeLength = 0.05f;
+
+	private Camera _mainCam;
+	private Coroutine _shakeRoutine;
+	private float _shakeAmt;
 
 
 	private void Awake()
 	{
-		if(MainCam == null)
+		_mainCam = GetComponent<Camera>();
+
+		if(_mainCam == null)
 		{
-			MainCam = Camera.main;
+			_mainCam = Camera.main;
 		}
 	}
 
 	private void Update()
 	{
-		if(DebugMode)
-		{
-			if(Input.GetKeyDown(KeyCode.T))
-			{
-				Shake(ShakeAmt, ShakeLength);
-			}
-		}
+		if (_debugMode && Input.GetKey(KeyCode.T))
+			Shake(_shakeAmount, _shakeLength);
 	}
 
 	public void Shake(float amt, float length)
 	{
-		shakeAmount = amt;
-		InvokeRepeating("BeginShake", 0, ShakeAmt);
-		Invoke("StopShake", length);
+		if(_shakeRoutine == null)
+		_shakeRoutine = StartCoroutine(ShakeRoutine(amt, length));
 	}
 
-	void BeginShake()
+
+
+	IEnumerator ShakeRoutine(float amt, float length)
 	{
-		if(shakeAmount > 0)
+		float timer = 0;
+
+		while (amt > 0 && timer < length)
 		{
-			Vector3 camPos = MainCam.transform.position;
+			float offsetZ = Random.value * amt * 2 - amt;
 
-			float offsetX = Random.value * shakeAmount * 2 - shakeAmount;
-			float offsetY = Random.value * shakeAmount * 2 - shakeAmount;
+			_mainCam.transform.eulerAngles = new Vector3(0, 0, offsetZ);
 
-			camPos.x += offsetX;
-			camPos.y += offsetY;
-
-			MainCam.transform.position = camPos;
+			yield return null;
+			timer += Time.deltaTime;
 		}
-	}
 
-	void StopShake()
-	{
-		CancelInvoke("BeginShake");
+		_mainCam.transform.eulerAngles = new Vector3(0, 0, 0);
+
+		yield return new WaitForSeconds(_shakeDelay);
+		_shakeRoutine = null;
 	}
 }

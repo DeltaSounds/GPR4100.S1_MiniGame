@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IDamageable
 {
 	public ShakeCamera2D CameraShake;
 	public HealthBar healthBar;
 
 	[Space]
 	[Header("Regenerations Properties")]
-
 	[SerializeField] private float _regenSpeed;
 	[SerializeField] private float _regenAmount;
 
@@ -61,5 +60,10 @@ public class PlayerHealth : MonoBehaviour
 	{
 		CurrentHealth = Mathf.Clamp(CurrentHealth += heal, 0, MaxHealth);
 		healthBar.SetCurrentHealth(CurrentHealth);
+	}
+
+	public void Damage(float damage)
+	{
+		OnDamage(damage);
 	}
 }

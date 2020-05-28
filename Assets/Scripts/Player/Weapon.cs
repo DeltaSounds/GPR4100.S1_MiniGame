@@ -5,44 +5,43 @@ public class Weapon : MonoBehaviour
 	[Header("References")]
 	public GameManager PlayerManager;
 	public CharacterController2D CharControl;
-	[Space]
 	public GameObject Projectile;
 	public Transform Arm;
 	public Transform FireTransform;
+
 	[Space]
-	public bool SingleFire;
+	[Header("Fire Settings")]
 	[Range(0, 2)] public float FireDelay;
+	[SerializeField] private bool _singleFire;
+	[SerializeField] private AudioSource _source;
 
-	[HideInInspector] public AudioSource Source;
-
+	private float _timer;
+	private Vector3 _target;
+	private Vector3 _difference;
 	private Camera _playerCamera;
-
-	float timer;
-	Vector3 target;
-	Vector3 difference;
 
 
 
 	private void Awake()
 	{
-		Source = GetComponent<AudioSource>();
+		_source = GetComponent<AudioSource>();
 		_playerCamera = GetComponent<Camera>();
 	}
 
 	private void Start()
 	{
-		timer = FireDelay;
+		_timer = FireDelay;
 	}
 
 	void Update()
 	{
-		if (PlayerManager.UnlockItem[1])
+		if (PlayerManager.UnlockItem[1].EnableItem)
 		{
-			target = _playerCamera.ScreenToWorldPoint(new Vector3(Screen.width - Input.mousePosition.x, Screen.height - Input.mousePosition.y, transform.position.z));
+			_target = _playerCamera.ScreenToWorldPoint(new Vector3(Screen.width - Input.mousePosition.x, Screen.height - Input.mousePosition.y, transform.position.z));
 
-			difference = target - Arm.position;
+			_difference = _target - Arm.position;
 
-			float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+			float rotationZ = Mathf.Atan2(_difference.y, _difference.x) * Mathf.Rad2Deg;
 
 
 			Vector3 theScale = CharControl.transform.localScale;
@@ -58,13 +57,13 @@ public class Weapon : MonoBehaviour
 
 
 
-			timer -= Time.deltaTime;
+			_timer -= Time.deltaTime;
 
-			if (Input.GetButtonDown("Fire1") && SingleFire)
+			if (Input.GetButtonDown("Fire1") && _singleFire)
 				Fire();
-			else if (Input.GetButton("Fire1") && !SingleFire && timer <= 0)
+			else if (Input.GetButton("Fire1") && !_singleFire && _timer <= 0)
 			{
-				timer = FireDelay;
+				_timer = FireDelay;
 				Fire();
 			}
 		}
@@ -73,6 +72,6 @@ public class Weapon : MonoBehaviour
 	public void Fire()
 	{
 		Instantiate(Projectile, FireTransform.position, FireTransform.rotation);
-		Source.Play();
+		_source.Play();
 	}
 }

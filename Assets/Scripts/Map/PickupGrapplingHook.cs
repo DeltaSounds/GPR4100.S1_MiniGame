@@ -12,7 +12,7 @@ public class PickupGrapplingHook : MonoBehaviour
 	{
 		if(collision.tag == "Player")
 		{
-			PlayerManager.UnlockItem[0] = true;
+			PlayerManager.UnlockItem[0].EnableItem = true;
 			SpriteRef.enabled = false;
 		}
 	}
