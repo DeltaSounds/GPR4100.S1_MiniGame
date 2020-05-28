@@ -21,6 +21,7 @@ public class BossMovement : MonoBehaviour, IDamageable
 	[Space]
 	[Header("Boss Settings")]
 	[SerializeField] private float _health = 200;
+	[SerializeField] private Sprite _sDefault, _sLaser, _sRage;
 
 	[Space]
 	[Header("Rage Settings")]
@@ -28,13 +29,16 @@ public class BossMovement : MonoBehaviour, IDamageable
 	[SerializeField] private float _rageModeThrust = 10;
 	[SerializeField] private float _coolDown = 2;
 	[SerializeField] private float _duration = 1;
+	[SerializeField] private float AICurrentHealth;
 
 	private Rigidbody2D _selfRigid;
 	private BossAttack _attackRef;
 	private float _currentDistance;
-	[SerializeField] private float AICurrentHealth;
-	private bool _turn;
 	private float _timer;
+	private float _rageSpeed;
+	private float _laserStop;
+	private float _laserSlow;
+	private bool _turn;
 
 	void Awake()
 	{
@@ -46,6 +50,10 @@ public class BossMovement : MonoBehaviour, IDamageable
 	{
 		AICurrentHealth = _health;
 		_timer = _coolDown;
+
+		_rageSpeed = -_moveSpeed * 1.2f;
+		_laserStop = _stoppingDistance * 1.5f;
+		_laserSlow = _slowingDistance * 1.6f;
 	}
 
 	private void Update()
@@ -60,10 +68,11 @@ public class BossMovement : MonoBehaviour, IDamageable
 		switch (_currentState)
 		{
 			case BossState.Laser:
+				UpdateLaser();
+				break;
 			case BossState.Default:
 				UpdateDefault();
 				break;
-
 			case BossState.Rage:
 				UpdateRage();
 				break;
@@ -90,7 +99,19 @@ public class BossMovement : MonoBehaviour, IDamageable
 
 	private void UpdateMovement()
 	{
+		Vector3 dir = _target.transform.position - transform.position;
+		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 180;
+		Quaternion finalRotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
+		switch(_currentState)
+		{
+			case BossState.Rage:
+			transform.Rotate(0, 0, angle * _rotationSpeed * Time.deltaTime);
+			break;
+			default:
+			transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, _rotationSpeed * Time.deltaTime);
+			break;
+		}
 
 		_currentDistance = Vector2.Distance(_target.position, transform.position);
 
@@ -107,6 +128,8 @@ public class BossMovement : MonoBehaviour, IDamageable
 
 	void UpdateDefault()
 	{
+		GetComponent<SpriteRenderer>().sprite = _sDefault;
+
 		// Eye's Rotation
 		Vector3 dir = _target.transform.position - transform.position;
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 180;
@@ -121,10 +144,29 @@ public class BossMovement : MonoBehaviour, IDamageable
 		}
 	}
 
+	void UpdateLaser()
+	{
+		GetComponent<SpriteRenderer>().sprite = _sLaser;
+
+		_stoppingDistance = 2;
+		_slowingDistance = 3;
+
+		if (_timer <= 0)
+		{
+			_selfRigid.AddForce(transform.up * _rageModeThrust, ForceMode2D.Impulse);
+			_timer = _coolDown;
+
+		}
+
+	}
+
 	void UpdateRage()
 	{
-		// On rage drunk rotate
-		transform.Rotate(0, 0, 1 * _rotationSpeed * Time.deltaTime);
+		GetComponent<SpriteRenderer>().sprite = _sRage;
+
+		_stoppingDistance = 0.6f;
+		_slowingDistance = 2;
+		_moveSpeed = 6;
 	}
 
 	public void Damage(float damage)

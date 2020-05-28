@@ -16,7 +16,7 @@ public class BossAttack : MonoBehaviour
 
 	[Space]
 	[Header("Laser Settings")]
-	[SerializeField] private bool _enableLaser;
+	[SerializeField] private LineRenderer _laserLine;
 	[SerializeField] private float _laserDamagePerSecond = 2;
 	[SerializeField] private float _distance = 5;
 	[SerializeField] private float _coolDown = 2;
@@ -27,26 +27,34 @@ public class BossAttack : MonoBehaviour
 	private bool _laserActive;
 
 
-
+	private void Start()
+	{
+		_laserLine.enabled = false;
+	}
 
 	private void Update()
 	{
+		_laserLine.SetPosition(0, new Vector3(_laserEmitter.position.x, _laserEmitter.position.y, transform.position.z));
+
 		_timer1 -= Time.deltaTime;
 
 		if (_timer1 <= 0 && _laserActive)
 		{
 			StartCoroutine(ShootLaser());
+			_timer1 = _coolDown;
 		}
 	}
 
 	public void StartLaser()
 	{
 		_laserActive = true;
+		_timer1 = _coolDown;
 	}
 
 	public void StopLaser()
 	{
 		_laserActive = false;
+		_laserLine.enabled = false;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -67,13 +75,16 @@ public class BossAttack : MonoBehaviour
 	IEnumerator ShootLaser()
 	{
 		float timer = _duration;
-
-		while (timer > 0 && _enableLaser)
+		
+		while (timer > 0 && _laserActive)
 		{
 			RaycastHit2D laser = Physics2D.Raycast(_laserEmitter.position, _laserEmitter.right * -1, _distance, _CollisionMask);
 			Debug.DrawLine(_laserEmitter.position, laser.point, Color.red, Time.deltaTime);
 
+			_laserLine.enabled = true;
+
 			timer -= Time.deltaTime;
+			_laserLine.SetPosition(1, new Vector3(laser.point.x, laser.point.y, transform.position.z));
 
 			IDamageable damageable = null;
 
@@ -85,6 +96,8 @@ public class BossAttack : MonoBehaviour
 
 			yield return null;
 		}
+
+		_laserLine.enabled = false;
 	}
 	
 }

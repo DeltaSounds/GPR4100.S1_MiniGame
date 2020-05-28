@@ -15,7 +15,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 	public AudioSource HurtSound;
 
 	public float MaxHealth = 100;
-	[HideInInspector]public float CurrentHealth;
+	[HideInInspector] public float CurrentHealth;
 
 
 	private void Awake()
