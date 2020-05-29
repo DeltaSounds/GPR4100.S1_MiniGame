@@ -1,19 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PickupGrapplingHook : MonoBehaviour
 {
-	public GameManager PlayerManager;
-	public SpriteRenderer SpriteRef;
+	[SerializeField] private GameManager _playerManager;
 
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.tag == "Player")
+		if(collision.CompareTag("Player"))
 		{
-			PlayerManager.UnlockItem[0].EnableItem = true;
-			SpriteRef.enabled = false;
+			SpriteRenderer spriteRef = GetComponent<SpriteRenderer>();
+
+			_playerManager.UnlockItem[0].EnableItem = true;
+			spriteRef.enabled = false;
 		}
 	}
 }

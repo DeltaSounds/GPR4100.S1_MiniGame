@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ChangeToNextLevel : MonoBehaviour
@@ -9,7 +7,7 @@ public class ChangeToNextLevel : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "Player")
+		if (collision.CompareTag("Player"))
 			ChangeScene();
 	}
 

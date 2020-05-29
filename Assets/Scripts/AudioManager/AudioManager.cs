@@ -4,13 +4,13 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 	public static AudioManager instance;
-
+	public AudioMixerGroup mixerGroup;
 	public bool StartMusic;
 	public bool Randomizer;
 
-	public AudioMixerGroup mixerGroup;
-
 	public Sound[] sounds;
+
+
 
 	void Awake()
 	{

@@ -78,6 +78,7 @@ public class BossMovement : MonoBehaviour
 
 		UpdateState();
 
+		// State Machine
 		switch (_currentState)
 		{
 			case BossState.Laser:
@@ -168,7 +169,6 @@ public class BossMovement : MonoBehaviour
 		{
 			_selfRigid.AddForce(transform.up * _rageModeThrust, ForceMode2D.Impulse);
 			_timer = _coolDown;
-
 		}
 
 	}

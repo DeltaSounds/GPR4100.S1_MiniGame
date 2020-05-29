@@ -1,13 +1,14 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Traps : MonoBehaviour
 {
-	public Rigidbody2D PlayerCharacter;
-
-	public float Damage = 10;
-	public float Thrust = 10;
+	[Header("References")]
+	[SerializeField] private Rigidbody2D PlayerCharacter;
+	[Space]
+	[Header("Trap Settings")]
+	[SerializeField] private float Damage = 10;
+	[SerializeField] private float Thrust = 10;
 
 
 	private void OnTriggerStay2D (Collider2D other)

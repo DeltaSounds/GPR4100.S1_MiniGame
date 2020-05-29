@@ -3,19 +3,16 @@ using UnityEngine;
 
 public class EndGame : MonoBehaviour
 {
-	public GameObject PlayerRef;
-
+	[SerializeField] private GameObject PlayerRef;
 	[Space]
-
+	[Header("Game Over Settings")]
 	[SerializeField] private Text _title;
 	[SerializeField] private string _looseTitleText = "Game Over!";
 	[SerializeField] private Color _looseTitleColor;
-
 	[Space]
-
+	[Header("Win Settings")]
 	[SerializeField] private string _winTitleText = "You Win!";
 	[SerializeField] private Color _winTitleColor;
-
 
 
 	public void OnEndGame(bool gameOver)

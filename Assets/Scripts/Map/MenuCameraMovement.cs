@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class MenuCameraMovement : MonoBehaviour
 {
-	public GameObject CameraRef;
-
+	[Header("Menu Camera Settings")]
+	[SerializeField] private GameObject _cameraRef;
+	[SerializeField] private GameObject _pointStart;
+	[SerializeField] private GameObject _pointEnd;
 	[Space]
-	public GameObject PointStart;
-	public GameObject PointEnd;
-
 	[SerializeField] private float _horizontalSpeed;
 	[SerializeField] private float _verticalSpeed;
 
@@ -18,8 +17,8 @@ public class MenuCameraMovement : MonoBehaviour
 	private void Start()
 	{
 
-		CameraRef.transform.position = new Vector3 (PointStart.transform.position.x, CameraRef.transform.position.y, CameraRef.transform.position.z);
-		newPos = CameraRef.transform.position;
+		_cameraRef.transform.position = new Vector3 (_pointStart.transform.position.x, _cameraRef.transform.position.y, _cameraRef.transform.position.z);
+		newPos = _cameraRef.transform.position;
 
 		StartCoroutine(HorizontalMoveCoroutine());
 	}
@@ -30,11 +29,11 @@ public class MenuCameraMovement : MonoBehaviour
 
 		while (true)
 		{
-			if (newPos.x > PointEnd.transform.position.x)
+			if (newPos.x > _pointEnd.transform.position.x)
 			{
 				direction = -1;
 			}
-			else if (newPos.x < PointStart.transform.position.x)
+			else if (newPos.x < _pointStart.transform.position.x)
 			{
 				direction = 1;
 			}
@@ -42,7 +41,7 @@ public class MenuCameraMovement : MonoBehaviour
 
 			newPos.x += direction * _horizontalSpeed * Time.deltaTime;
 
-			CameraRef.transform.position = newPos;
+			_cameraRef.transform.position = newPos;
 			yield return null;
 		}
 	}

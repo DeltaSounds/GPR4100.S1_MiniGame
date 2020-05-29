@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
 	[Header("References")]
 	[SerializeField] private GameObject _targetObject;
-	[SerializeField] private GameObject _enemyRef;
-	[SerializeField] private GameObject _groundCheck;
+	[SerializeField] private GameObject _heightCheck;
 
 	[Space]
 	[Header("Movement Settings")]
@@ -28,8 +25,8 @@ public class EnemyMovement : MonoBehaviour
 
 	private void Awake()
 	{
-		_enemySprite = _enemyRef.GetComponent<SpriteRenderer>();
-		_enemyRigid = _enemyRef.GetComponent<Rigidbody2D>();
+		_enemySprite = GetComponent<SpriteRenderer>();
+		_enemyRigid = GetComponent<Rigidbody2D>();
 	}
 
 	void Update()
@@ -68,7 +65,7 @@ public class EnemyMovement : MonoBehaviour
 				_enemyRigid.AddForce(transform.up * _jumpVelocity, ForceMode2D.Impulse);
 			}
 
-			if (transform.position.y > _groundCheck.transform.position.y)
+			if (transform.position.y > _heightCheck.transform.position.y)
 			{
 				transform.position += Vector3.right * _speed * Time.deltaTime;
 				_enemySprite.flipX = false;
@@ -83,7 +80,7 @@ public class EnemyMovement : MonoBehaviour
 			}
 
 
-			if (transform.position.y > _groundCheck.transform.position.y)
+			if (transform.position.y > _heightCheck.transform.position.y)
 			{
 				transform.position += Vector3.right * -_speed * Time.deltaTime;
 				_enemySprite.flipX = true;
@@ -102,15 +99,15 @@ public class EnemyMovement : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == _targetObject.tag)
+		if (collision.CompareTag(_targetObject.tag))
 			_playerDetected = true;
 	}
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-		if(collision.tag == _targetObject.tag)
+		if(collision.CompareTag(_targetObject.tag))
 		{
-			if(_enemyRef.transform.position.x < _targetObject.transform.position.x)
+			if(transform.position.x < _targetObject.transform.position.x)
 				HasReached = true;
 			else
 				HasReached = false;
@@ -119,7 +116,7 @@ public class EnemyMovement : MonoBehaviour
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		if (collision.tag == _targetObject.tag)
+		if (collision.CompareTag(_targetObject.tag))
 			_playerDetected = false;
 	}
 }

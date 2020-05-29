@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour
 	private void OnDeath()
 	{
 		_uiGameOver.OnEndGame(true);
-		Time.timeScale = 0;
+		Time.timeScale = 0.2f;
 		CharacterRendr.enabled = false;
 	}
 

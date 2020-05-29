@@ -2,8 +2,6 @@
 
 public class EnemyDamage : MonoBehaviour
 {
-	[SerializeField] private GameObject _playerRef;
-	[SerializeField] private GameObject _enemyRef;
 	[SerializeField] private Rigidbody2D _playerRigid;
 	[SerializeField] private EnemyMovement _eMovement;
 	[Space]
@@ -13,8 +11,7 @@ public class EnemyDamage : MonoBehaviour
 
 	private void Awake()
 	{
-		_playerRigid = _playerRef.GetComponent<Rigidbody2D>();
-		_eMovement = _enemyRef.GetComponent<EnemyMovement>();
+		_eMovement = GetComponent<EnemyMovement>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)

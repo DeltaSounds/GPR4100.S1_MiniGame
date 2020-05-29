@@ -13,8 +13,8 @@ public class Weapon : MonoBehaviour
 	[Header("Fire Settings")]
 	[Range(0, 2)] public float FireDelay;
 	[SerializeField] private bool _singleFire;
-	[SerializeField] private AudioSource _source;
 
+	private AudioSource _source;
 	private float _timer;
 	private Vector3 _target;
 	private Vector3 _difference;

@@ -1,29 +1,31 @@
 using UnityEngine;
 using System.Collections;
 
-public class Camera2DFollow : MonoBehaviour {
-	
+public class Camera2DFollow : MonoBehaviour
+{
 	public Transform target;
 
-	Vector3 lastTargetPosition;
-	Vector3 currentVelocity;
-	Vector3 lookAheadPos;
-	Vector3 newZ;
+	[Space]
+	[Header("Camera Follow Settings")]
+	[SerializeField] private float _damping = 1;
+	[SerializeField] private float _lookAheadFactor = 3;
+	[SerializeField] private float _lookAheadReturnSpeed = 0.5f;
+	[SerializeField] private float _lookAheadMoveThreshold = 0.1f;
+	[SerializeField] private float _yPosRestriction = -1;
+	[Space]
+	[Header("Scroll Settings")]
+	[SerializeField] private float _maxScrollBound = -0.462f;
+	[SerializeField] private float _minScrollBound = 1.671f;
+	[SerializeField] private float _scrollMax;
+	[SerializeField] private float _scrollMin;
+	[SerializeField] private float _startOffset;
 
-	public float MaxScrollBound = -0.462f;
-	public float MinScrollBound = 1.671f;
-	public float damping = 1;
-	public float lookAheadFactor = 3;
-	public float lookAheadReturnSpeed = 0.5f;
-	public float lookAheadMoveThreshold = 0.1f;
-	public float yPosRestriction = -1;
-
-	[SerializeField] float scrollMax;
-	[SerializeField] float scrollMin;
-	[SerializeField] float startOffset;
-
-	float offsetZ;
-	float nextTimeToSearch = 0;
+	private float _offsetZ;
+	private float _nextTimeToSearch = 0;
+	private Vector3 _lastTargetPosition;
+	private Vector3 _currentVelocity;
+	private Vector3 _lookAheadPos;
+	private Vector3 _newZ;
 	
 
 
@@ -31,8 +33,8 @@ public class Camera2DFollow : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-		lastTargetPosition = target.position;
-		offsetZ = startOffset;
+		_lastTargetPosition = target.position;
+		_offsetZ = _startOffset;
 		transform.parent = null;
 	}
 	
@@ -48,39 +50,39 @@ public class Camera2DFollow : MonoBehaviour {
 
 
 		float scroll = Input.mouseScrollDelta.y;
-		offsetZ = Mathf.Clamp(scroll + offsetZ, scrollMin, scrollMax);
+		_offsetZ = Mathf.Clamp(scroll + _offsetZ, _scrollMin, _scrollMax);
 
 		// only update lookahead pos if accelerating or changed direction
-		float xMoveDelta = (target.position - lastTargetPosition).x;
+		float xMoveDelta = (target.position - _lastTargetPosition).x;
 
-	    bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold;
+	    bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > _lookAheadMoveThreshold;
 
 		if (updateLookAheadTarget)
 		{
-			lookAheadPos = lookAheadFactor * Vector3.right * Mathf.Sign(xMoveDelta);
+			_lookAheadPos = _lookAheadFactor * Vector3.right * Mathf.Sign(xMoveDelta);
 		} else
 		{
-			lookAheadPos = Vector3.MoveTowards(lookAheadPos, Vector3.zero, Time.deltaTime * lookAheadReturnSpeed);	
+			_lookAheadPos = Vector3.MoveTowards(_lookAheadPos, Vector3.zero, Time.deltaTime * _lookAheadReturnSpeed);	
 		}
 		
-		Vector3 aheadTargetPos = target.position + lookAheadPos + Vector3.forward * offsetZ;
-		Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref currentVelocity, damping);
+		Vector3 aheadTargetPos = target.position + _lookAheadPos + Vector3.forward * _offsetZ;
+		Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref _currentVelocity, _damping);
 
-		newPos = new Vector3 (newPos.x, Mathf.Clamp (newPos.y, yPosRestriction, Mathf.Infinity), offsetZ);
+		newPos = new Vector3 (newPos.x, Mathf.Clamp (newPos.y, _yPosRestriction, Mathf.Infinity), _offsetZ);
 
 		transform.position = newPos;
 		
-		lastTargetPosition = target.position;
+		_lastTargetPosition = target.position;
 	}
 
 	void FindPlayer ()
 	{
-		if (nextTimeToSearch <= Time.time)
+		if (_nextTimeToSearch <= Time.time)
 		{
 			GameObject searchResult = GameObject.FindGameObjectWithTag ("Player");
 			if (searchResult != null)
 				target = searchResult.transform;
-			nextTimeToSearch = Time.time + 0.5f;
+			_nextTimeToSearch = Time.time + 0.5f;
 		}
 	}
 }

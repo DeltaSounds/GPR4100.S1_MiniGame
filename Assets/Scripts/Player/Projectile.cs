@@ -1,22 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-	public float Speed;
-	public float Damage;
+	[SerializeField] private float _speed;
+	[SerializeField] private float _damage;
 
-	[HideInInspector]public Rigidbody2D ProjectileRigid;
+	private Rigidbody2D _projectileRigid;
 
 	private void Awake()
 	{
-		ProjectileRigid = GetComponent<Rigidbody2D>();
+		_projectileRigid = GetComponent<Rigidbody2D>();
 	}
 
 	private void Start()
 	{
-		ProjectileRigid.velocity = transform.right * Speed;
+		_projectileRigid.velocity = transform.right * _speed;
 	}
 
 	public virtual void OnTriggerEnter2D(Collider2D collision)
@@ -26,7 +24,7 @@ public class Projectile : MonoBehaviour
 
 		if (collision.CompareTag("Enemy"))
 		{
-			collision.GetComponent<IDamageable>().Damage(Damage);
+			collision.GetComponent<IDamageable>().Damage(_damage);
 			DestroyObject();
 		}
 	}

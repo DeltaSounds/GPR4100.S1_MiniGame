@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SlimeBounceTrigger : MonoBehaviour
 {
-	[HideInInspector] AudioSource Source;
+	private AudioSource _source;
 
 	private void Awake()
 	{
-		Source = GetComponent<AudioSource>();
+		_source = GetComponent<AudioSource>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if(collision.CompareTag("Ground"))
-		Source.Play();
+		_source.Play();
 	}
 }

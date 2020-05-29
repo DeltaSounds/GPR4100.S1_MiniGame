@@ -37,8 +37,6 @@ public class ShakeCamera2D : MonoBehaviour
 		_shakeRoutine = StartCoroutine(ShakeRoutine(amt, length));
 	}
 
-
-
 	IEnumerator ShakeRoutine(float amt, float length)
 	{
 		float timer = 0;
