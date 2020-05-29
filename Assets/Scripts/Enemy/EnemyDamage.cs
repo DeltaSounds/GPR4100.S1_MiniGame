@@ -2,46 +2,40 @@
 
 public class EnemyDamage : MonoBehaviour
 {
-	public GameObject PlayerRef;
-	public GameObject EnemyRef;
-
-	[HideInInspector] public PlayerHealth PHealth;
-	[HideInInspector] public Rigidbody2D PlayerRigid;
-	[HideInInspector] public EnemyMovement EMovement;
-
+	[SerializeField] private GameObject _playerRef;
+	[SerializeField] private GameObject _enemyRef;
+	[SerializeField] private Rigidbody2D _playerRigid;
+	[SerializeField] private EnemyMovement _eMovement;
 	[Space]
-	public float Damage = 5;
-	public float Knockback = 2;
+	[SerializeField] float Damage = 5;
+	[SerializeField] float Knockback = 2;
 
 
 	private void Awake()
 	{
-		PHealth = PlayerRef.GetComponent<PlayerHealth>();
-		PlayerRigid = PlayerRef.GetComponent<Rigidbody2D>();
-		EMovement = EnemyRef.GetComponent<EnemyMovement>();
+		_playerRigid = _playerRef.GetComponent<Rigidbody2D>();
+		_eMovement = _enemyRef.GetComponent<EnemyMovement>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "Player" && PHealth != null)
-			PHealth.OnDamage(Damage);
-		else if (PHealth == null)
-			Debug.LogError("Player is missing PlayerHealth script");
+		if (collision.CompareTag("Player"))
+		{
+			IDamageable damageable = collision.GetComponent<IDamageable>();
 
+			if (damageable != null)
+				damageable.Damage(Damage);
+		}
 	}
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-		if (collision.tag == "Player" && PlayerRigid != null && EMovement != null)
+		if (collision.CompareTag("Player") && _playerRigid != null && _eMovement != null)
 		{
-			if (EMovement.HasReached)
-				PlayerRigid.AddForce(transform.right * Knockback * 2, ForceMode2D.Impulse);
+			if (_eMovement.HasReached)
+				_playerRigid.AddForce(transform.right * Knockback * 2, ForceMode2D.Impulse);
 			else
-				PlayerRigid.AddForce(transform.right * -Knockback * 2, ForceMode2D.Impulse);
+				_playerRigid.AddForce(transform.right * -Knockback * 2, ForceMode2D.Impulse);
 		}
-		else if (PlayerRigid == null)
-			Debug.LogError("(EnemyDamage) Player is missing RigidBody2D");
-		else if (EMovement == null)
-			Debug.LogError("(EnemyDamage) Enemy is missing EnemyMovement script");
 	}
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Traps : MonoBehaviour
 {
 	public Rigidbody2D PlayerCharacter;
-	public PlayerHealth PlayerRef;
 
 	public float Damage = 10;
 	public float Thrust = 10;
@@ -23,7 +22,10 @@ public class Traps : MonoBehaviour
 	{
 		if (other.tag == "Player")
 		{
-			PlayerRef.OnDamage(Damage);
+			IDamageable damageable = other.GetComponent<IDamageable>();
+
+			if (damageable != null)
+				damageable.Damage(Damage);
 		}
 	}
 

@@ -4,43 +4,43 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-
-	public GameObject TargetObject;
-	public GameObject EnemyRef;
-	public GameObject GroundCheck;
-
-	[HideInInspector] public SpriteRenderer EnemySprite;
-	[HideInInspector] public Rigidbody2D EnemyRigid;
-	[HideInInspector] public bool HasReached = false;
+	[Header("References")]
+	[SerializeField] private GameObject _targetObject;
+	[SerializeField] private GameObject _enemyRef;
+	[SerializeField] private GameObject _groundCheck;
 
 	[Space]
-	public float Speed = 1f;
-	public float Distance = 2f;
-	public float JumpVelocity = 1f;
-	public float JumpFrequency = 1f;
+	[Header("Movement Settings")]
+	[SerializeField] private float _speed = 1f;
+	[SerializeField] private float _distance = 2f;
+	[SerializeField] private float _jumpVelocity = 1f;
+	[SerializeField] private float _jumpFrequency = 1f;
 
+	public bool HasReached = false;
+
+	private SpriteRenderer _enemySprite;
+	private Rigidbody2D _enemyRigid;
 	private float _timer;
 	private float _jumpTimer;
-
 	private bool _playerDetected = false;
 
 
 
 	private void Awake()
 	{
-		EnemySprite = EnemyRef.GetComponent<SpriteRenderer>();
-		EnemyRigid = EnemyRef.GetComponent<Rigidbody2D>();
+		_enemySprite = _enemyRef.GetComponent<SpriteRenderer>();
+		_enemyRigid = _enemyRef.GetComponent<Rigidbody2D>();
 	}
 
 	void Update()
 	{
-		if (EnemySprite != null && EnemyRigid != null)
+		if (_enemySprite != null && _enemyRigid != null)
 		{
 			_timer += Time.deltaTime;
 			_jumpTimer += Time.deltaTime;
 
 			//Change Direction
-			if (_timer > Distance)
+			if (_timer > _distance)
 			{
 				_timer = 0;
 				ChangeDirection();
@@ -48,11 +48,11 @@ public class EnemyMovement : MonoBehaviour
 
 			Move();
 		}
-		else if(EnemySprite == null)
+		else if(_enemySprite == null)
 		{
 			Debug.LogError("(EnemyMovement) Your Enemy is missing a Sprite Rendered!");
 		}
-		else if(EnemyRigid == null)
+		else if(_enemyRigid == null)
 		{
 			Debug.LogError("(EnemyMovement) Your Enemy is missing a Rigid Body 2D!");
 		}
@@ -62,36 +62,34 @@ public class EnemyMovement : MonoBehaviour
 	{
 		if (HasReached)
 		{
-			if (_jumpTimer > JumpFrequency)
+			if (_jumpTimer > _jumpFrequency)
 			{
 				_jumpTimer = 0;
-				EnemyRigid.AddForce(transform.up * JumpVelocity, ForceMode2D.Impulse);
+				_enemyRigid.AddForce(transform.up * _jumpVelocity, ForceMode2D.Impulse);
 			}
 
-			if (transform.position.y > GroundCheck.transform.position.y)
+			if (transform.position.y > _groundCheck.transform.position.y)
 			{
-				transform.position += Vector3.right * Speed * Time.deltaTime;
-				EnemySprite.flipX = false;
+				transform.position += Vector3.right * _speed * Time.deltaTime;
+				_enemySprite.flipX = false;
 			}
 		}
 		else
 		{
-			if (_jumpTimer > JumpFrequency)
+			if (_jumpTimer > _jumpFrequency)
 			{
 				_jumpTimer = 0;
-				EnemyRigid.AddForce(transform.up * JumpVelocity, ForceMode2D.Impulse);
+				_enemyRigid.AddForce(transform.up * _jumpVelocity, ForceMode2D.Impulse);
 			}
 
 
-			if (transform.position.y > GroundCheck.transform.position.y)
+			if (transform.position.y > _groundCheck.transform.position.y)
 			{
-				transform.position += Vector3.right * -Speed * Time.deltaTime;
-				EnemySprite.flipX = true;
+				transform.position += Vector3.right * -_speed * Time.deltaTime;
+				_enemySprite.flipX = true;
 			}
 		}
 	}
-
-
 
 	void ChangeDirection()
 	{
@@ -102,32 +100,26 @@ public class EnemyMovement : MonoBehaviour
 		
 	}
 
-
-
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == TargetObject.tag)
+		if (collision.tag == _targetObject.tag)
 			_playerDetected = true;
 	}
 
-
-
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-		if(collision.tag == TargetObject.tag)
+		if(collision.tag == _targetObject.tag)
 		{
-			if(EnemyRef.transform.position.x < TargetObject.transform.position.x)
+			if(_enemyRef.transform.position.x < _targetObject.transform.position.x)
 				HasReached = true;
 			else
 				HasReached = false;
 		}
 	}
 
-
-
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		if (collision.tag == TargetObject.tag)
+		if (collision.tag == _targetObject.tag)
 			_playerDetected = false;
 	}
 }

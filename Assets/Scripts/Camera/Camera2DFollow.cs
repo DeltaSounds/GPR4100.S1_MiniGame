@@ -17,7 +17,11 @@ public class Camera2DFollow : MonoBehaviour {
 	public float lookAheadReturnSpeed = 0.5f;
 	public float lookAheadMoveThreshold = 0.1f;
 	public float yPosRestriction = -1;
-	
+
+	[SerializeField] float scrollMax;
+	[SerializeField] float scrollMin;
+	[SerializeField] float startOffset;
+
 	float offsetZ;
 	float nextTimeToSearch = 0;
 	
@@ -28,7 +32,7 @@ public class Camera2DFollow : MonoBehaviour {
 	void Start ()
 	{
 		lastTargetPosition = target.position;
-		offsetZ = (transform.position - target.position).z;
+		offsetZ = startOffset;
 		transform.parent = null;
 	}
 	
@@ -42,6 +46,9 @@ public class Camera2DFollow : MonoBehaviour {
 			return;
 		}
 
+
+		float scroll = Input.mouseScrollDelta.y;
+		offsetZ = Mathf.Clamp(scroll + offsetZ, scrollMin, scrollMax);
 
 		// only update lookahead pos if accelerating or changed direction
 		float xMoveDelta = (target.position - lastTargetPosition).x;
@@ -59,7 +66,7 @@ public class Camera2DFollow : MonoBehaviour {
 		Vector3 aheadTargetPos = target.position + lookAheadPos + Vector3.forward * offsetZ;
 		Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref currentVelocity, damping);
 
-		newPos = new Vector3 (newPos.x, Mathf.Clamp (newPos.y, yPosRestriction, Mathf.Infinity), newPos.z);
+		newPos = new Vector3 (newPos.x, Mathf.Clamp (newPos.y, yPosRestriction, Mathf.Infinity), offsetZ);
 
 		transform.position = newPos;
 		

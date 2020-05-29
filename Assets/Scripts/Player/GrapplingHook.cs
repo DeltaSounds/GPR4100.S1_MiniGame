@@ -1,11 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public struct ThisStruct
-{
-
-}
-
 public class GrapplingHook : MonoBehaviour
 {
 	[Header("References")]
@@ -19,7 +14,6 @@ public class GrapplingHook : MonoBehaviour
 	[SerializeField] private float _raycastDistance = 20;
 	[SerializeField] private float _jumpVelocity = 4;
 
-	private PlayerHealth PHealth;
 	private Rigidbody2D PlayerRigid;
 	private DistanceJoint2D PlayerJoint;
 
@@ -27,15 +21,12 @@ public class GrapplingHook : MonoBehaviour
 
 	private Camera _playerCamera;
 
-
-
 	Vector3 target;
 	Vector3 difference;
 
 
 	private void Awake()
 	{
-		PHealth = Player.GetComponent<PlayerHealth>();
 		PlayerRigid = Player.GetComponent<Rigidbody2D>();
 		PlayerJoint = Player.GetComponent<DistanceJoint2D>();
 		_playerCamera = GetComponent<Camera>();
@@ -43,7 +34,7 @@ public class GrapplingHook : MonoBehaviour
 
 	private void Start()
 	{
-		if (Player != null && PlayerRigid != null && PHealth != null && PlayerJoint != null)
+		if (Player != null && PlayerRigid != null && PlayerJoint != null)
 		{
 			PlayerJoint.enabled = false;
 			LineRef.enabled = false;
@@ -52,7 +43,7 @@ public class GrapplingHook : MonoBehaviour
 
 	void Update()
 	{
-		if(PHealth.CurrentHealth > 0 && PlayerManager.UnlockItem[0].EnableItem && Player != null && PHealth != null && PlayerRigid != null && PlayerJoint != null)
+		if(PlayerManager.UnlockItem[0].EnableItem && Player != null && PlayerRigid != null && PlayerJoint != null)
 		{
 			target = _playerCamera.ScreenToWorldPoint(new Vector3(Screen.width - Input.mousePosition.x, Screen.height - Input.mousePosition.y, transform.position.z));
 

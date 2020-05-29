@@ -5,8 +5,6 @@ public class EndGame : MonoBehaviour
 {
 	public GameObject PlayerRef;
 
-	[HideInInspector] public PlayerHealth PlayerH;
-
 	[Space]
 
 	[SerializeField] private Text _title;
@@ -19,16 +17,10 @@ public class EndGame : MonoBehaviour
 	[SerializeField] private Color _winTitleColor;
 
 
-	private void Start()
-	{
-		gameObject.SetActive(false);
-	}
 
-	public void OnEndGame()
+	public void OnEndGame(bool gameOver)
 	{
-		PlayerH = PlayerRef.GetComponent<PlayerHealth>();
-
-		if (PlayerH.CurrentHealth <= 0)
+		if (gameOver)
 		{
 			// if player is dead then set the title text and color and make it visible
 			gameObject.SetActive(true);

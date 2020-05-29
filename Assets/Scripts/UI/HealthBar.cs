@@ -1,34 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-	public Slider slider;
+	[SerializeField] private HealthComponent _health;
+	[SerializeField] private Slider slider;
 	[SerializeField] private float _speed;
-	private float _targetHealth;
+
 	private Coroutine _updateHealthCoroutine;
+	private float _targetHealth;
 
 
-
-	public void SetMaxHealth(float maxHealth)
+	private void Start()
 	{
-		slider.maxValue = maxHealth;
-		slider.value = maxHealth;
-		_targetHealth = maxHealth;
+		SetMaxHealth(_health.MaxHealth);
+		_health.HealthChanged += OnHealthChanged;
 	}
 
-	public void SetCurrentHealth(float currentHealth)
+	private void OnHealthChanged(float amount, bool isHealing)
 	{
 		slider.value = _targetHealth;
 
 		if (_updateHealthCoroutine != null)
 			StopCoroutine(_updateHealthCoroutine);
 
-		_targetHealth = currentHealth;
+		_targetHealth = amount;
 
 		_updateHealthCoroutine = StartCoroutine(UpdateHealth());
+	}
+
+	void SetMaxHealth(float maxHealth)
+	{
+		slider.maxValue = maxHealth;
+		slider.value = maxHealth;
+		_targetHealth = maxHealth;
 	}
 
 	IEnumerator UpdateHealth()
@@ -47,8 +55,6 @@ public class HealthBar : MonoBehaviour
 
 			yield return null;
 		}
-
 		slider.value = _targetHealth;
 	}
 }
-		

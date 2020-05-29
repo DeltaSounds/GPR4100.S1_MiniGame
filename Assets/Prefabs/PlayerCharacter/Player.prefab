@@ -374,6 +374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shakeAmount: 0.1
   _shakeLength: 0.05
+  _shakeDelay: 0.5
   _debugMode: 0
 --- !u!114 &6004849316741008589
 MonoBehaviour:
@@ -393,12 +394,9 @@ MonoBehaviour:
     m_Bits: 1024
   LineRef: {fileID: 0}
   PlayerManager: {fileID: 6729365172980956299}
-  _jumpVelocity: 2
   _speed: 8
   _raycastDistance: 5
-  PHealth: {fileID: 0}
-  PlayerRigid: {fileID: 6004849316301518733}
-  PlayerJoint: {fileID: 6004849316301518728}
+  _jumpVelocity: 2
   GrappleSound: {fileID: 0}
 --- !u!114 &1032679252
 MonoBehaviour:
@@ -412,15 +410,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c421b10f3a68beb46902d4e520ff06e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerManager: {fileID: 6729365172980956299}
-  CharControl: {fileID: 6004849316301518722}
-  Projectile: {fileID: 2893022238182085611, guid: 8c3b3471c4a9efa4e85d18302aa5c604,
-    type: 3}
-  Arm: {fileID: 1040930601}
-  FireTransform: {fileID: 157031627}
-  SingleFire: 0
+  _playerManager: {fileID: 6729365172980956299}
+  _charControl: {fileID: 6004849316301518722}
+  _projectile: {fileID: 0}
+  _arm: {fileID: 1040930601}
+  _fireTransform: {fileID: 157031627}
   FireDelay: 0
-  Source: {fileID: 0}
+  _singleFire: 0
+  _source: {fileID: 0}
 --- !u!82 &1032679253
 AudioSource:
   m_ObjectHideFlags: 0
@@ -821,8 +818,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerRef: {fileID: 6004849316301518726}
   Arms: {fileID: 1040930600}
-  CharacterRendr: {fileID: 0}
-  PlayerH: {fileID: 0}
   _uiGameOver: {fileID: 0}
   _animator: {fileID: 6004849316301518734}
   UnlockItem:

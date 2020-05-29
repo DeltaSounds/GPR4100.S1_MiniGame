@@ -10,9 +10,9 @@ public class FinishLevel : MonoBehaviour
 	public GameManager PlayerManager;
 	public CharacterController2D PlayerController;
 
-	private void OnTriggerStay2D(Collider2D collision)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		EndGameUI.OnEndGame();
+		EndGameUI.OnEndGame(false);
 
 		PlayerManager.LevelIndex = 0;
 

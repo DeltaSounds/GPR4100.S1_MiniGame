@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class BossMovement : MonoBehaviour, IDamageable
+public class BossMovement : MonoBehaviour
 {
 	public enum BossState
 	{
@@ -20,7 +21,6 @@ public class BossMovement : MonoBehaviour, IDamageable
 
 	[Space]
 	[Header("Boss Settings")]
-	[SerializeField] private float _health = 200;
 	[SerializeField] private Sprite _sDefault, _sLaser, _sRage;
 
 	[Space]
@@ -31,6 +31,7 @@ public class BossMovement : MonoBehaviour, IDamageable
 	[SerializeField] private float _duration = 1;
 	[SerializeField] private float AICurrentHealth;
 
+	private float _health;
 	private Rigidbody2D _selfRigid;
 	private BossAttack _attackRef;
 	private float _currentDistance;
@@ -48,12 +49,24 @@ public class BossMovement : MonoBehaviour, IDamageable
 
 	void Start()
 	{
+		HealthComponent HealthComp;
+		HealthComp = GetComponent<HealthComponent>();
+		HealthComp.HealthChanged += OnHealthChanged;
+
+		_health = HealthComp.MaxHealth;
+
 		AICurrentHealth = _health;
 		_timer = _coolDown;
 
 		_rageSpeed = -_moveSpeed * 1.2f;
 		_laserStop = _stoppingDistance * 1.5f;
 		_laserSlow = _slowingDistance * 1.6f;
+
+	}
+
+	private void OnHealthChanged(float health, bool isHeal)
+	{
+		AICurrentHealth = health;
 	}
 
 	private void Update()
@@ -167,10 +180,5 @@ public class BossMovement : MonoBehaviour, IDamageable
 		_stoppingDistance = 0.6f;
 		_slowingDistance = 2;
 		_moveSpeed = 6;
-	}
-
-	public void Damage(float damage)
-	{
-		AICurrentHealth -= damage;
 	}
 }

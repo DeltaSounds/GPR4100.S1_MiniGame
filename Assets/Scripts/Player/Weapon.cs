@@ -3,11 +3,11 @@
 public class Weapon : MonoBehaviour
 {
 	[Header("References")]
-	public GameManager PlayerManager;
-	public CharacterController2D CharControl;
-	public GameObject Projectile;
-	public Transform Arm;
-	public Transform FireTransform;
+	[SerializeField] private GameManager PlayerManager;
+	[SerializeField] private CharacterController2D CharControl;
+	[SerializeField] private GameObject Projectile;
+	[SerializeField] private Transform Arm;
+	[SerializeField] private Transform FireTransform;
 
 	[Space]
 	[Header("Fire Settings")]
@@ -35,6 +35,8 @@ public class Weapon : MonoBehaviour
 
 	void Update()
 	{
+		float test = 1;
+
 		if (PlayerManager.UnlockItem[1].EnableItem)
 		{
 			_target = _playerCamera.ScreenToWorldPoint(new Vector3(Screen.width - Input.mousePosition.x, Screen.height - Input.mousePosition.y, transform.position.z));

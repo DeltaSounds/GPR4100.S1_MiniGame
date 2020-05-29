@@ -1,19 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-	public GameObject PlayerRef;
-	public GameObject Arms;
-
-	[HideInInspector] public SpriteRenderer CharacterRendr;
-	[HideInInspector] public PlayerHealth PlayerH;
-
+	[SerializeField] private GameObject PlayerRef;
+	[SerializeField] private GameObject Arms;
 	[SerializeField] private EndGame _uiGameOver;
 	[SerializeField] private Animator _animator;
 
-	public Items[] UnlockItem = new Items[2];
+	private SpriteRenderer CharacterRendr;
 
+	public Items[] UnlockItem = new Items[2];
 	public int LevelIndex;
 
 
@@ -22,25 +20,24 @@ public class GameManager : MonoBehaviour
 	private void Awake()
 	{
 		CharacterRendr = PlayerRef.GetComponent<SpriteRenderer>();
-		PlayerH = PlayerRef.GetComponent<PlayerHealth>();
+		PlayerRef.GetComponent<HealthComponent>().Death += OnDeath;
+	}
+
+	private void OnDeath()
+	{
+		_uiGameOver.OnEndGame(true);
+		Time.timeScale = 0;
+		CharacterRendr.enabled = false;
 	}
 
 	private void Start()
 	{
+		Time.timeScale = 1;
+
 		_animator.SetBool("hasGun", UnlockItem[1].EnableItem);
 
 		if (UnlockItem[1].EnableItem)
 			Arms.SetActive(true);
-	}
-
-	private void Update()
-	{
-		if(PlayerH.CurrentHealth <= 0)
-		{
-			_uiGameOver.OnEndGame();
-
-			CharacterRendr.enabled = false;
-		}
 	}
 
 	public void RestartScene()
