@@ -1,11 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuCameraMovement : MonoBehaviour
 {
 	[Header("Menu Camera Settings")]
-	[SerializeField] private GameObject _cameraRef;
 	[SerializeField] private GameObject _pointStart;
 	[SerializeField] private GameObject _pointEnd;
 	[Space]
@@ -17,8 +15,8 @@ public class MenuCameraMovement : MonoBehaviour
 	private void Start()
 	{
 
-		_cameraRef.transform.position = new Vector3 (_pointStart.transform.position.x, _cameraRef.transform.position.y, _cameraRef.transform.position.z);
-		newPos = _cameraRef.transform.position;
+		transform.position = new Vector3 (_pointStart.transform.position.x, transform.position.y, transform.position.z);
+		newPos = transform.position;
 
 		StartCoroutine(HorizontalMoveCoroutine());
 	}
@@ -41,7 +39,7 @@ public class MenuCameraMovement : MonoBehaviour
 
 			newPos.x += direction * _horizontalSpeed * Time.deltaTime;
 
-			_cameraRef.transform.position = newPos;
+			transform.position = newPos;
 			yield return null;
 		}
 	}

@@ -1232,9 +1232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7479f4ee4ebb794b9a743ca7da54d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraRef: {fileID: 221297546}
-  PointStart: {fileID: 442557891}
-  PointEnd: {fileID: 1648541325}
+  _pointStart: {fileID: 442557891}
+  _pointEnd: {fileID: 1648541325}
   _horizontalSpeed: 1
   _verticalSpeed: 0
 --- !u!1 &224849554

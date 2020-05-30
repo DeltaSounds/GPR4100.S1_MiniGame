@@ -21,7 +21,11 @@ public class BossMovement : MonoBehaviour
 
 	[Space]
 	[Header("Boss Settings")]
-	[SerializeField] private Sprite _sDefault, _sLaser, _sRage;
+	[SerializeField] private Sprite _sDefault;
+	[SerializeField] private Sprite _sLaser;
+	[SerializeField] private Sprite _sRage;
+
+
 
 	[Space]
 	[Header("Rage Settings")]

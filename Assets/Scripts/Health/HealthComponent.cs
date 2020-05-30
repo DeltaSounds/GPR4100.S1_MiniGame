@@ -6,6 +6,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 	[Header("Health Settings")]
 	[SerializeField] private float _maxHealth = 100;
 	[SerializeField] private ShakeCamera2D _shakeCam;
+	[SerializeField] private bool _enableShakeCam = true;
 	[SerializeField] private AudioSource _hurtSound;
 
 	[Space]
@@ -52,6 +53,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 		_currentHealth = Mathf.Clamp(_currentHealth -= damage, 0, _maxHealth);
 		HealthChanged?.Invoke(_currentHealth, false);
 
+		if(_enableShakeCam)
 		_shakeCam.Shake(3f, 0.1f);
 
 		if (_currentHealth <= 0)
