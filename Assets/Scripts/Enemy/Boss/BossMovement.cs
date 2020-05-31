@@ -35,6 +35,11 @@ public class BossMovement : MonoBehaviour
 	[SerializeField] private float _duration = 1;
 	[SerializeField] private float AICurrentHealth;
 
+	[Space]
+	[Header("Death Settings")]
+	[SerializeField] private EndGame _winUI;
+	[SerializeField] private GameManager _playerManager;
+
 	private float _health;
 	private Rigidbody2D _selfRigid;
 	private BossAttack _attackRef;
@@ -56,6 +61,7 @@ public class BossMovement : MonoBehaviour
 		HealthComponent HealthComp;
 		HealthComp = GetComponent<HealthComponent>();
 		HealthComp.HealthChanged += OnHealthChanged;
+		HealthComp.Death += OnDeath;
 
 		_health = HealthComp.MaxHealth;
 
@@ -65,7 +71,15 @@ public class BossMovement : MonoBehaviour
 		_rageSpeed = -_moveSpeed * 1.2f;
 		_laserStop = _stoppingDistance * 1.5f;
 		_laserSlow = _slowingDistance * 1.6f;
+	}
 
+	private void OnDeath()
+	{
+		_winUI.enabled = true;
+		_winUI.OnEndGame(false);
+		_playerManager.LevelIndex = 0;
+
+		Time.timeScale = 0.2f;
 	}
 
 	private void OnHealthChanged(float health, bool isHeal)
