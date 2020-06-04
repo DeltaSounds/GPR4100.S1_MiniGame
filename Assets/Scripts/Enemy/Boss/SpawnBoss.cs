@@ -10,6 +10,8 @@ public class SpawnBoss : MonoBehaviour
 	[SerializeField] private AudioSource _stopLastMusic;
 	[SerializeField] private AudioSource _startNextMusic;
 
+	private bool _doOnce = true;
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.CompareTag("Player"))
@@ -17,13 +19,11 @@ public class SpawnBoss : MonoBehaviour
 			_boss.SetActive(true);
 			_bossUI.SetActive(true);
 
-			if (_changeMusic)
+			if (_changeMusic && _doOnce)
 			{
-				do
-				{
-					_stopLastMusic.Stop();
-					_startNextMusic.Play();
-				} while (false);
+				_stopLastMusic.Stop();
+				_startNextMusic.Play();
+				_doOnce = false;
 			}
 		}
 	}

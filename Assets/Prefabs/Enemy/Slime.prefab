@@ -76,11 +76,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7845f8474b4874e4eb44d7026a03cac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerRef: {fileID: 0}
-  EnemyRef: {fileID: 1900955662463696159}
-  DeathParticle: {fileID: 755083671359134258, guid: 262722a09d240b641ad80bbd74a43a9d,
-    type: 3}
-  PlayerRigid: {fileID: 0}
+  _playerRigid: {fileID: 0}
+  _enemyRef: {fileID: 0}
+  _deathParticle: {fileID: 0}
   Knockback: 4
 --- !u!61 &1900955661183731694
 BoxCollider2D:
@@ -152,11 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a0d305dc48d9f49b6d62384cec7cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerRef: {fileID: 0}
-  EnemyRef: {fileID: 1900955662463696159}
-  PHealth: {fileID: 0}
-  PlayerRigid: {fileID: 0}
-  EMovement: {fileID: 0}
+  _playerRigid: {fileID: 0}
+  _eMovement: {fileID: 1900955662463696165}
   Damage: 5
   Knockback: 4
 --- !u!70 &1900955661563988424
@@ -379,16 +374,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 786a78ed1c1a4c54a8956fc74ab810ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetObject: {fileID: 0}
-  EnemyRef: {fileID: 1900955662463696159}
-  GroundCheck: {fileID: 1900955662191239195}
-  EnemySprite: {fileID: 0}
-  EnemyRigid: {fileID: 0}
+  _targetObject: {fileID: 0}
+  _heightCheck: {fileID: 0}
+  _speed: 1
+  _distance: 2
+  _jumpVelocity: 1
+  _jumpFrequency: 1
   HasReached: 0
-  Speed: 1.5
-  Distance: 2
-  JumpVelocity: 2
-  JumpFrequency: 1
 --- !u!1 &8722730776731818868
 GameObject:
   m_ObjectHideFlags: 0

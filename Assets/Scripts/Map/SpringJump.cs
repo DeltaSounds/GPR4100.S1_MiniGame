@@ -2,13 +2,13 @@
 
 public class SpringJump : MonoBehaviour
 {
-	[SerializeField] private Rigidbody2D _rigidPlayer;
 	[SerializeField] private float _force = 4;
-
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.tag == "Player")
-		_rigidPlayer.AddForce(transform.up * _force, ForceMode2D.Impulse);
+		Rigidbody2D objectRigid = collision.GetComponent<Rigidbody2D>();
+
+		if (objectRigid != null && !collision.isTrigger)
+			objectRigid.AddForce(transform.up * _force, ForceMode2D.Impulse);
 	}
 }

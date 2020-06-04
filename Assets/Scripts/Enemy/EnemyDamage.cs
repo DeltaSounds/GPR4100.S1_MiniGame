@@ -9,11 +9,6 @@ public class EnemyDamage : MonoBehaviour
 	[SerializeField] float Knockback = 2;
 
 
-	private void Awake()
-	{
-		_eMovement = GetComponent<EnemyMovement>();
-	}
-
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.CompareTag("Player"))
@@ -27,7 +22,7 @@ public class EnemyDamage : MonoBehaviour
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-		if (collision.CompareTag("Player") && _playerRigid != null && _eMovement != null)
+		if (collision.CompareTag("Player"))
 		{
 			if (_eMovement.HasReached)
 				_playerRigid.AddForce(transform.right * Knockback * 2, ForceMode2D.Impulse);
