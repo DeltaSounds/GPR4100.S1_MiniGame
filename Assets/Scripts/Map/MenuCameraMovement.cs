@@ -14,6 +14,9 @@ public class MenuCameraMovement : MonoBehaviour
 
 	private void Start()
 	{
+		Time.timeScale = 1;
+		CharacterController2D.LastCheckPoint = null;
+
 
 		transform.position = new Vector3 (_pointStart.transform.position.x, transform.position.y, transform.position.z);
 		newPos = transform.position;

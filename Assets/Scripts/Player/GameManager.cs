@@ -7,8 +7,10 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private GameObject Arms;
 	[SerializeField] private EndGame _uiGameOver;
 	[SerializeField] private Animator _animator;
+	[SerializeField] private GameObject _pause;
 
 	private SpriteRenderer CharacterRendr;
+	private bool _toggle = true;
 
 	public Items[] UnlockItem = new Items[2];
 	public int LevelIndex;
@@ -20,6 +22,12 @@ public class GameManager : MonoBehaviour
 	{
 		CharacterRendr = PlayerRef.GetComponent<SpriteRenderer>();
 		PlayerRef.GetComponent<HealthComponent>().Death += OnDeath;
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+			PauseGame();
 	}
 
 	private void OnDeath()
@@ -42,5 +50,28 @@ public class GameManager : MonoBehaviour
 	public void RestartScene()
 	{
 		SceneManager.LoadScene(LevelIndex);
+	}
+
+	public void PauseGame()
+	{
+		if(_toggle)
+		{
+			Time.timeScale = 0;
+			_pause.SetActive(true);
+
+			_toggle = false;
+		}
+		else
+		{
+			Time.timeScale = 1;
+			_pause.SetActive(false);
+
+			_toggle = true;
+		}
+	}
+
+	public void BackToMenu()
+	{
+		SceneManager.LoadScene(0);
 	}
 }

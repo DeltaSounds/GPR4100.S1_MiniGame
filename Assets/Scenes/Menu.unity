@@ -2956,7 +2956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneIndex: 1
-  _clearCheckPoints: 0
+  _clearCheckPoints: 1
 --- !u!4 &855695146
 Transform:
   m_ObjectHideFlags: 0
