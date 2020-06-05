@@ -353,13 +353,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 6004849316301518721}
-  MaxScrollBound: -0.462
-  MinScrollBound: 1.671
-  damping: 0.1
-  lookAheadFactor: 0.3
-  lookAheadReturnSpeed: 0.1
-  lookAheadMoveThreshold: 0.05
-  yPosRestriction: -10
+  _damping: 1
+  _lookAheadFactor: 3
+  _lookAheadReturnSpeed: 0.5
+  _lookAheadMoveThreshold: 0.1
+  _yPosRestriction: -1
+  _maxScrollBound: -0.462
+  _minScrollBound: 1.671
+  _scrollMax: 0
+  _scrollMin: 0
+  _startOffset: 0
 --- !u!114 &2757863315715341815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,14 +413,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c421b10f3a68beb46902d4e520ff06e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerManager: {fileID: 6729365172980956299}
-  _charControl: {fileID: 6004849316301518722}
-  _projectile: {fileID: 0}
-  _arm: {fileID: 1040930601}
-  _fireTransform: {fileID: 157031627}
+  PlayerManager: {fileID: 0}
+  CharControl: {fileID: 0}
+  Projectile: {fileID: 0}
+  Arm: {fileID: 0}
+  FireTransform: {fileID: 0}
   FireDelay: 0
   _singleFire: 0
-  _source: {fileID: 0}
 --- !u!82 &1032679253
 AudioSource:
   m_ObjectHideFlags: 0
@@ -537,7 +539,6 @@ GameObject:
   - component: {fileID: 6004849316301518732}
   - component: {fileID: 6004849316301518722}
   - component: {fileID: 6004849316301518723}
-  - component: {fileID: 6004849316301518735}
   - component: {fileID: 6004849316301518734}
   m_Layer: 9
   m_Name: Character
@@ -622,7 +623,7 @@ DistanceJoint2D:
   m_GameObject: {fileID: 6004849316301518726}
   m_Enabled: 0
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -729,29 +730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef61cbb76f1c0c438a43722b7f58e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 6004849316301518722}
-  animator: {fileID: 6004849316301518734}
-  PHealth: {fileID: 6004849316301518735}
-  Speed: 10
---- !u!114 &6004849316301518735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6004849316301518726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306192c014084bd4ab7834b554b42a8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CameraShake: {fileID: 2757863315715341815}
-  healthBar: {fileID: 0}
-  _regenSpeed: 1
-  _regenAmount: 0.5
-  HurtSound: {fileID: 0}
-  MaxHealth: 100
-  CurrentHealth: 0
+  _speed: 20
 --- !u!95 &6004849316301518734
 Animator:
   serializedVersion: 3
@@ -820,6 +799,7 @@ MonoBehaviour:
   Arms: {fileID: 1040930600}
   _uiGameOver: {fileID: 0}
   _animator: {fileID: 6004849316301518734}
+  _pause: {fileID: 0}
   UnlockItem:
   - ItemName: Grappling Hook
     EnableItem: 0
